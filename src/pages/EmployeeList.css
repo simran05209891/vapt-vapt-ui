@@ -1,0 +1,9 @@
+.employee-container{
+    padding: 20px;
+}
+
+.scan-btn.active {
+
+    background-color: #04266e;
+    color: white;
+}

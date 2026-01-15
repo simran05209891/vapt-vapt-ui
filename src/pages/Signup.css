@@ -1,0 +1,120 @@
+.firstdiv{
+    height: 635px;
+    width: 300px;
+    border: 2px solid black;
+    text-align: center;
+    border-radius: 15px;
+    background-color: lavender;
+
+}
+
+.firstdiv:hover{
+    border: 5px dashed rgb(5, 63, 87);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    padding: 3px;
+    width: 250px;
+}
+
+button{
+
+    margin: 12px;
+    width: 90px;
+    padding: 5px;
+    font-weight: bold;
+    background-color: aquamarine; 
+    border-radius: 5px;
+
+}
+
+button:hover{
+    background-color: blue;
+    color: white;
+    cursor: pointer;
+}
+
+body{
+    margin: 0;
+    background-color: aliceblue;
+}
+
+p{
+
+    /* color: goldenrod; */
+    color: darkblue;
+    font-weight: 900;
+}
+
+
+.seconddiv {
+
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin: 5px 0;
+}
+
+.seconddiv label {
+
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+}
+
+
+input[type="radio"] {
+
+    width: auto;
+    margin:  0;
+}
+
+select {
+    width: 260px;
+    padding: 3.5px;
+    margin: 1px 0;
+}
+
+textarea {
+
+    width: 250px;
+    padding: 5px;
+    margin: 18px 0;
+    
+}
+
+h5{
+    color: goldenrod;
+}
+
+.secondpara{
+    font-size: medium;
+    font-weight: 900;
+    color: goldenrod;
+    font-style: italic;
+}
+/* 
+body {
+
+    background-image: url(https://t4.ftcdn.net/jpg/03/57/34/39/360_F_357343965_u58BFcRrziBVMqgt6liwPHJKcIjHsPnc.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+
+} */
+
+
+.signup-container{
+
+    min-height :100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: aliceblue;
+}
+
+

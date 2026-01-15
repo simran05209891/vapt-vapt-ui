@@ -1,0 +1,41 @@
+.login-container {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.login-form {
+
+    width: 320px;
+    padding: 25px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+}
+
+
+.login-form h2{
+    text-align: center;
+
+}
+
+
+.login-form input {
+
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.login-form button {
+
+    width: 90%;
+    padding: 10px;
+    background: blue;
+    color: White;
+    border: none;
+    cursor: pointer;
+}
+
