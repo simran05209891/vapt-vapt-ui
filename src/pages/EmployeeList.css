@@ -2,8 +2,192 @@
     padding: 20px;
 }
 
-.scan-btn.active {
 
-    background-color: #04266e;
-    color: white;
+/* ===== MODULE GRID ===== */
+
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin-top: 10px;
 }
+
+.module-item {
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  padding: 10px 12px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  text-align: center;
+  transition: 0.2s ease;
+}
+
+.module-item:hover {
+  background: #eef2ff;
+  border-color: #6366f1;
+}
+/* ===== TAB BUTTONS ===== */
+
+.tab-btn {
+  margin: 6px;
+  padding: 8px 18px;
+  border-radius: 6px;
+  border: 1px solid #0b5ed7;
+  background: #e0f2fe;
+  color: #000;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tab-btn:hover {
+  background: #0b5ed7;
+  color: #fff;
+}
+
+.tab-btn.active {
+  background: #0b5ed7;
+  color: #fff;
+  box-shadow: 0 0 0 2px rgba(11, 94, 215, 0.25);
+}
+
+/* ===== TARGET INPUT + SCAN BUTTON ===== */
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin: 18px 0;
+}
+
+.center input {
+  width: 320px;
+  padding: 10px 14px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  outline: none;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.center input:focus {
+  border-color: #0b5ed7;
+  box-shadow: 0 0 0 2px rgba(11, 94, 215, 0.15);
+}
+
+.center button {
+  padding: 10px 22px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 6px;
+  border: none;
+  background: #0b5ed7;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.center button:hover {
+  background: #084298;
+}
+
+.center button:active {
+  transform: scale(0.97);
+}
+
+
+/* ===== TABS CONTAINER ===== */
+
+.tabs {
+  display: flex;
+  justify-content: center;     /* center align */
+  align-items: center;
+  flex-wrap: wrap;             /* overflow na ho */
+  gap: 10px;
+  margin: 20px auto 25px;
+}
+
+/* ===== TAB BUTTON ===== */
+
+.tab-btn {
+  padding: 8px 18px;
+  font-size: 13px;
+  font-weight: 600;
+  border-radius: 20px;
+  border: 1px solid #cbd5e1;
+  background: #f8fafc;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* hover */
+.tab-btn:hover {
+  background: #e2e8f0;
+}
+
+/* active state */
+.tab-btn.active {
+  background: #0b5ed7;
+  color: #fff;
+  border-color: #0b5ed7;
+  box-shadow: 0 2px 6px rgba(11, 94, 215, 0.3);
+}
+
+/* click feel */
+.tab-btn:active {
+  transform: scale(0.96);
+}
+
+.container h2 {
+  text-align: center;
+  margin-top: 15px;
+  margin-bottom: 25px;
+  text-decoration: underline;
+}
+
+
+/* contant ko center kiya */
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card {
+  width: 100%;
+  max-width: 900px;
+  margin: 12px auto;
+
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 16px 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.sub-card {
+  margin-top: 10px;
+  padding: 12px;
+  border-left: 4px solid #0b5ed7;
+  background: #f8fafc;
+  border-radius: 6px;
+}
+
+.card {
+  margin: auto;
+}
+
+
+.card p {
+  line-height: 1.6;
+}
+
+
+
