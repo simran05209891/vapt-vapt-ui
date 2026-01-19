@@ -1750,6 +1750,57 @@
 import { useEffect, useState } from "react";
 import "./EmployeeList.css";
 
+const BASE_URL = "http://20.197.47.46";
+
+
+const HOME_ENDPOINT_LINKS = [
+  {
+    label: "Home / Engine Info",
+    url: "http://20.197.47.46/"
+  },
+  {
+    label: "Recon",
+    url: "http://20.197.47.46/recon?target=demo.preview-workspace.com"
+  },
+  {
+    label: "Fast Scan",
+    url: "http://20.197.47.46/scan/fast?target=demo.preview-workspace.com"
+  },
+  {
+    label: "Deep VAPT Scan",
+    url: "http://20.197.47.46/scan/deep?target=demo.preview-workspace.com"
+  },
+  {
+    label: "Web Application Scan",
+    url: "http://20.197.47.46/scan/web?target=demo.preview-workspace.com"
+  },
+  {
+    label: "SSL / TLS Security Scan",
+    url: "http://20.197.47.46/scan/ssl?target=demo.preview-workspace.com"
+  },
+  {
+    label: "Scan History",
+    url: "http://20.197.47.46/history"
+  },
+  {
+    label: "Live Statistics",
+    url: "http://20.197.47.46/stats"
+  }
+];
+
+
+
+const HOME_VISIBLE_MODULES = [
+  "Recon",
+  "Fast Scan",
+  "Deep Scan",
+  "Web Scan",
+  "SSL Scan",
+  "History",
+  "Stats",
+  "Home"
+];
+
 /* ================= API MAP ================= */
 
 const apiMap = {
@@ -1762,6 +1813,17 @@ const apiMap = {
   history: "/history",
   stats: "/stats",
 };
+
+const moduleToTabMap = {
+  "Recon": "recon",
+  "Fast Scan": "fast",
+  "Deep Scan": "deep",
+  "Web Scan": "web",
+  "SSL Scan": "ssl",
+  "History": "history",
+  "Stats": "stats"
+};
+
 
 /* ================= SAFE HELPERS ================= */
 
@@ -1785,11 +1847,11 @@ export default function EmployeeList() {
     setLoading(true);
     setData(null);
 
-    let url = apiMap[activeTab];
-
-    if (!["home", "history", "stats"].includes(activeTab)) {
+    let url = BASE_URL + apiMap[activeTab];
+    console.log(url,'url')
+     if (!["home", "history", "stats"].includes(activeTab)) {
       url = `${url}?target=${encodeURIComponent(target)}`;
-    }
+     }
 
     fetch(url)
       .then((res) => res.json())
@@ -1830,19 +1892,45 @@ export default function EmployeeList() {
 
   <div className="module-grid">
     {Array.isArray(data.modules) &&
-      data.modules.map((m, i) => (
-        <div key={i} className="module-item">
-          {m}
-        </div>
-      ))}
+  data.modules
+    .filter((m) => HOME_VISIBLE_MODULES.includes(m))
+    .map((m, i) => (
+      <div
+        key={i}
+        className="module-item"
+        onClick={() => {
+          const tab = moduleToTabMap[m];
+          if (tab) setActiveTab(tab);
+        }}
+        style={{ cursor: "pointer" }}
+      >
+        {m}
+      </div>
+))}
+
   </div>
 </div>
 
 
         <div className="card">
-          <h3>🔗 Endpoints</h3>
-          {renderKeyValue(data.available_endpoints)}
-        </div>
+  <h3>🔗 Endpoints</h3>
+
+  <ul className="endpoint-list">
+    {HOME_ENDPOINT_LINKS.map((ep, i) => (
+      <li key={i}>
+        <b>{ep.label}:</b>{" "}
+        <a
+          href={ep.url}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {ep.url}
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>
+
       </>
     );
 

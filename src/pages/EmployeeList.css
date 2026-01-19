@@ -189,5 +189,16 @@
   line-height: 1.6;
 }
 
+.module-item {
+  cursor: pointer;
+}
+
+.module-item:hover {
+  background: #eef2ff;
+  border-color: #6366f1;
+  transform: translateY(-2px);
+}
+
+
 
 
