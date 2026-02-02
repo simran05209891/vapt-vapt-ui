@@ -2,7 +2,7 @@ const handleLogin = async (e) => {
   e.preventDefault();
 
   if (!email || !password) {
-    setMsg("Email & password required");
+    setMsg("Email and password required");
     setColor("red");
     return;
   }
@@ -12,23 +12,35 @@ const handleLogin = async (e) => {
   setColor("black");
 
   try {
-    const payload = {
-      email,
-      password,
-      captcha: ""
-    };
+    let captchaToken = "";
+    if (window.grecaptcha) {
+      captchaToken = window.grecaptcha.getResponse();
+      if (!captchaToken) {
+        setMsg("Please verify captcha");
+        setColor("red");
+        setLoading(false);
+        return;
+      }
+    }
 
-    const res = await fetch("http://20.197.47.46/api/login", {
+    const response = await fetch("/api/login", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+        captcha: captchaToken,
+      }),
     });
 
-    const data = await res.json();
+    const data = await response.json();
 
-    if (!res.ok) {
-      setMsg(data.detail || "Login failed");
+    if (!response.ok) {
+      setMsg(data.error || "Login failed");
       setColor("red");
+      setLoading(false);
       return;
     }
 
@@ -36,7 +48,9 @@ const handleLogin = async (e) => {
     setMsg("Login successful ✅");
     setColor("green");
 
-    setTimeout(() => navigate("/home"), 1000);
+    setTimeout(() => {
+      navigate("/employees");
+    }, 1000);
 
   } catch (err) {
     setMsg("Server not reachable");
