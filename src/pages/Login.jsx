@@ -7,33 +7,56 @@ export default function Login() {
   const [msg, setMsg] = useState("");
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setMsg("Logging in...");
+
     try {
-      const res = await fetch("/api/login", {
+      const res = await fetch("http://20.197.47.46/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password })
+        body: JSON.stringify({ email, password }),
       });
 
       const data = await res.json();
 
-      if (data.token) {
-        localStorage.setItem("token", data.token);
-        navigate("/employees");
-      } else {
-        setMsg("Login failed");
+      if (!res.ok) {
+        setMsg(data.detail || "Login failed");
+        return;
       }
-    } catch {
-      setMsg("Server error");
+
+      localStorage.setItem("token", data.token);
+      setMsg("Login successful ✅");
+
+      setTimeout(() => navigate("/employees"), 800);
+    } catch (err) {
+      console.error(err);
+      setMsg("Server not reachable");
     }
   };
 
   return (
-    <div style={{ padding: 40 }}>
+    <div style={{ maxWidth: 350, margin: "80px auto" }}>
       <h2>VAPT Secure Login</h2>
-      <input placeholder="Email" onChange={e=>setEmail(e.target.value)} /><br/><br/>
-      <input type="password" placeholder="Password" onChange={e=>setPassword(e.target.value)} /><br/><br/>
-      <button onClick={handleLogin}>Login</button>
-      <p style={{ color: "red" }}>{msg}</p>
+
+      <form onSubmit={handleLogin}>
+        <input
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          style={{ width: "100%", marginBottom: 10 }}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          style={{ width: "100%", marginBottom: 10 }}
+        />
+        <button style={{ width: "100%" }}>Login</button>
+      </form>
+
+      <p>{msg}</p>
     </div>
   );
+}

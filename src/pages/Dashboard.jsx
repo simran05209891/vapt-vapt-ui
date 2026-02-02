@@ -2,40 +2,42 @@ import { useEffect, useState } from "react";
 
 export default function Dashboard() {
   const [data, setData] = useState(null);
+  const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch("/home", {
+    fetch("http://20.197.47.46/home", {
       headers: {
-        Authorization: Bearer ${localStorage.getItem("token")}
-      }
+        Authorization: Bearer ${localStorage.getItem("token")},
+      },
     })
-      .then(r => r.json())
-      .then(setData);
+      .then((res) => {
+        if (!res.ok) throw new Error("API failed");
+        return res.json();
+      })
+      .then((json) => setData(json))
+      .catch(() => setError("Unable to load dashboard"));
   }, []);
-
-  if (!data) return <p>Loading...</p>;
 
   return (
     <div style={{ padding: 30 }}>
-      <h2>Enterprise VAPT Dashboard</h2>
+      <h2>--Enterprise VAPT Security Dashboard--</h2>
 
-      {data.modules.map(m => (
-        <button
-          key={m}
-          style={{ margin: 5 }}
-          onClick={() =>
-            fetch(/${m.toLowerCase()}, {
-              headers: {
-                Authorization: Bearer ${localStorage.getItem("token")}
-              }
-            })
-              .then(r => r.json())
-              .then(res => alert(JSON.stringify(res, null, 2)))
-          }
-        >
-          {m}
-        </button>
-      ))}
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      {!data && !error && <p>Loading...</p>}
+
+      {data && (
+        <>
+          <p><b>Status:</b> {data.status}</p>
+          <p><b>Message:</b> {data.message}</p>
+
+          <h3>Modules</h3>
+          <ul>
+            {data.modules.map((m, i) => (
+              <li key={i}>{m}</li>
+            ))}
+          </ul>
+        </>
+      )}
     </div>
   );
 }
