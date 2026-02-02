@@ -5,41 +5,24 @@ export default function Dashboard() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch("http://20.197.47.46/home", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${localStorage.getItem("token")}`,
-      },
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("API failed");
-        return res.json();
-      })
-      .then((json) => setData(json))
-      .catch(() => setError("Unable to load dashboard"));
+    fetch("http://20.197.47.46/home")
+      .then(res => res.json())
+      .then(setData)
+      .catch(() => setError("Unable to load data"));
   }, []);
 
+  if (error) return <p>{error}</p>;
+  if (!data) return <p>Loading...</p>;
+
   return (
-    <div style={{ padding: "30px" }}>
+    <div style={{ padding: 30 }}>
       <h2>--Enterprise VAPT Security Dashboard--</h2>
+      <p>Status: {data.status}</p>
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {!data && !error && <p>Loading...</p>}
-
-      {data && (
-        <>
-          <p><b>Status:</b> {data.status}</p>
-          <p><b>Message:</b> {data.message}</p>
-
-          <h3>Modules</h3>
-          <ul>
-            {data.modules.map((m, i) => (
-              <li key={i}>{m}</li>
-            ))}
-          </ul>
-        </>
-      )}
+      <h3>Modules</h3>
+      <ul>
+        {data.modules.map((m, i) => <li key={i}>{m}</li>)}
+      </ul>
     </div>
   );
 }

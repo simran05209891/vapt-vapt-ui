@@ -9,13 +9,17 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setMsg("Logging in...");
+    setMsg("Checking credentials...");
 
     try {
       const res = await fetch("http://20.197.47.46/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({
+          email,
+          password,
+          captcha: "demo",
+        }),
       });
 
       const data = await res.json();
@@ -26,37 +30,19 @@ export default function Login() {
       }
 
       localStorage.setItem("token", data.token);
-      setMsg("Login successful ✅");
-
-      setTimeout(() => navigate("/employees"), 800);
-    } catch (err) {
-      console.error(err);
+      navigate("/employees");
+    } catch {
       setMsg("Server not reachable");
     }
   };
 
   return (
-    <div style={{ maxWidth: 350, margin: "80px auto" }}>
+    <form onSubmit={handleLogin} style={{ textAlign: "center", marginTop: 80 }}>
       <h2>VAPT Secure Login</h2>
-
-      <form onSubmit={handleLogin}>
-        <input
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          style={{ width: "100%", marginBottom: 10 }}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={{ width: "100%", marginBottom: 10 }}
-        />
-        <button style={{ width: "100%" }}>Login</button>
-      </form>
-
+      <input value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" /><br />
+      <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" /><br />
+      <button type="submit">Login</button>
       <p>{msg}</p>
-    </div>
+    </form>
   );
 }
