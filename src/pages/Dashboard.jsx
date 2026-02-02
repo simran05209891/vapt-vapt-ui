@@ -6,8 +6,10 @@ export default function Dashboard() {
 
   useEffect(() => {
     fetch("http://20.197.47.46/home", {
+      method: "GET",
       headers: {
-        Authorization: Bearer ${localStorage.getItem("token")},
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${localStorage.getItem("token")}`,
       },
     })
       .then((res) => {
@@ -19,7 +21,7 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div style={{ padding: 30 }}>
+    <div style={{ padding: "30px" }}>
       <h2>--Enterprise VAPT Security Dashboard--</h2>
 
       {error && <p style={{ color: "red" }}>{error}</p>}
