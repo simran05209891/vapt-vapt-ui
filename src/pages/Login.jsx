@@ -1,93 +1,106 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
-import Loader from "./Loader";
-import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [msg, setMsg] = useState("");
+  const [color, setColor] = useState("black");
+  const [loading, setLoading] = useState(false);
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [msg, setMsg] = useState("Enter the both feilds");
-    const [color, setColor] = useState("black");
-    const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
+  const handleLogin = async (e) => {
+    e.preventDefault();
 
-    const handleLogin = (e) => {
+    if (!email || !password) {
+      setMsg("Email and password required");
+      setColor("red");
+      return;
+    }
 
-         e.preventDefault();
-        
+    setLoading(true);
+    setMsg("Checking credentials...");
+    setColor("black");
 
-        if (email === "") {
-
-            setMsg("please enter email");
-            setColor("red");
-            return;
+    try {
+      let captchaToken = "";
+      if (window.grecaptcha) {
+        captchaToken = window.grecaptcha.getResponse();
+        if (!captchaToken) {
+          setMsg("Please verify captcha");
+          setColor("red");
+          setLoading(false);
+          return;
         }
+      }
 
+      const response = await fetch("http://20.197.47.46/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          captcha: captchaToken,
+        }),
+      });
 
-        if(!email.includes("@") || !email.includes(".")) {
+      const data = await response.json();
 
-            setMsg("Please enter valid email");
-            setColor("red");
-            return;
-        }
+      if (!response.ok) {
+        setMsg(data.error || "Invalid credentials");
+        setColor("red");
+        setLoading(false);
+        return;
+      }
 
-        if (password === "") {
+      localStorage.setItem("token", data.token);
+      setMsg("Login successful");
+      setColor("green");
 
-            setMsg("Please enter password");
-            setColor("red");
-            return;
-        }
+      setTimeout(() => navigate("/employees"), 1000);
+    } catch (err) {
+      setMsg("Server not reachable");
+      setColor("red");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        if (password.length<8) {
+  return (
+    <div className="login-container">
+      <form className="login-form" onSubmit={handleLogin}>
+        <h2>Login</h2>
 
-            setMsg("Password must be at least 8 characters");
-            setColor("red");
-            return;
-        }
+        <input
+          type="email"
+          value={email}
+          placeholder="Enter email"
+          onChange={(e) => setEmail(e.target.value)}
+        />
 
-        setMsg("Login successful ✅ ");
-        setColor("green");
+        <input
+          type="password"
+          value={password}
+          placeholder="Enter password"
+          onChange={(e) => setPassword(e.target.value)}
+        />
 
-         setLoading(true);
-        
+        <button type="submit" disabled={loading}>
+          {loading ? "Please wait..." : "Login"}
+        </button>
 
-        setTimeout(() => {
+        <p style={{ color }}>{msg}</p>
 
-            navigate("/employees");
-           },3000);
-        
-    };
-
-
-    return (
-
-        <div className = "login-container">
-
-            <form className="login-form">
-
-                <h2>LogIn</h2>
-
-                <input type="email" placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                <input type="password" placeholder="Enter password" value={password} onChange={(e) => setPassword(e.target.value)} />
-
-                {loading ? <Loader /> : <button type="button" onClick={handleLogin}>Login</button>}
-
-                <p className="msg" style={{ color }}>{msg}</p>
-
-                <p className="lastpara">
-                    Don't have an account?Click <Link to="/"> Signup</Link>
-                </p>
-
-
-            </form>
-
-
-        </div>
-
-    );
+        <p>
+          Don’t have an account? <Link to="/">Signup</Link>
+        </p>
+      </form>
+    </div>
+  );
 }
 
 export default Login;
