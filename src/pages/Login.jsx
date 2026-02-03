@@ -15,11 +15,7 @@ export default function Login() {
       const res = await fetch("http://20.197.47.46/api/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          password,
-          captcha: "demo",
-        }),
+        body: JSON.stringify({ email, password })
       });
 
       const data = await res.json();
@@ -30,19 +26,35 @@ export default function Login() {
       }
 
       localStorage.setItem("token", data.token);
-      navigate("/employees");
+      navigate("/dashboard");
+
     } catch {
       setMsg("Server not reachable");
     }
   };
 
   return (
-    <form onSubmit={handleLogin} style={{ textAlign: "center", marginTop: 80 }}>
+    <div style={{ textAlign: "center", marginTop: "100px" }}>
       <h2>VAPT Secure Login</h2>
-      <input value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" /><br />
-      <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Password" /><br />
-      <button type="submit">Login</button>
-      <p>{msg}</p>
-    </form>
+
+      <form onSubmit={handleLogin}>
+        <input
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        /><br /><br />
+
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        /><br /><br />
+
+        <button type="submit">Login</button>
+      </form>
+
+      <p style={{ color: "red" }}>{msg}</p>
+    </div>
   );
 }
